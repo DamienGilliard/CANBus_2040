@@ -11,10 +11,10 @@ The network architecture is as follows:
 <p align="center"> <img src="./assets/img/CAN_network.png" width=80% />
 
 And my current test setup consists of two [Adafruits rp2040 CAN bus feather microcontrollers](https://learn.adafruit.com/adafruit-rp2040-can-bus-feather) (each microcontroller has a 120 Ohms resistor inside, so no additionnal resistor is needed in this configuration):
- <p align="center">
- <video width="80%" controls autoplay>
-  <source src="./assets/clips/publisher-listener_over_CAN_with_Adafruit_CAN_bus.mp4">
-</video> 
+
+
+https://github.com/user-attachments/assets/d8740315-17c7-43bf-a3d3-c2e461612089
+
 
 ## Setup
 

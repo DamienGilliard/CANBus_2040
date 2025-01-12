@@ -52,4 +52,4 @@ while True:
             rgb_led.fill((255*math.sin(i/10), 255*math.cos(i/10), 50))
             time.sleep(0.05)
         rgb_led.fill((0, 0, 0))
-    message = 0
+        recieved_message = listener.receive() # clear the buffer

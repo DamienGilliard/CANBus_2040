@@ -41,26 +41,25 @@ data = None
 
 while True:
     if usb.connected:
-        data = usb.read()
+        data = usb.readline().decode("utf-8").strip()
     if data:
-        print(data)
-        usb.write("recieved!".encode("utf-8"))
-        listener = mcp.listen()
-        my_message = adafruit_mcp2515.canio.Message(id=0, data=data)
-        
-        if mcp.send(my_message):
-            # If message sent, victory led:
-            for i in range(100):
-                rgb_led.fill((255*math.sin(i/10), 255*math.cos(i/10), 50))
-                time.sleep(0.05)
-            rgb_led.fill((0, 0, 0))
+        if data == "turn on relay":
+            usb.write("turning relay on!".encode("utf-8"))
+            listener = mcp.listen()
+            my_message = adafruit_mcp2515.canio.Message(id=0x100, data=bytes([0x01]))
+            mcp.send(my_message)
+            data = None
+            
+
+        elif data == "turn off relay":
+            usb.write("turning relay off!".encode("utf-8"))
+            listener = mcp.listen()
+            my_message = adafruit_mcp2515.canio.Message(id=0x100, data=bytes([0x00]))
+            mcp.send(my_message)
+            data = None
 
     # Reset the data to avoid looping over the same data
     data = None
 
     # Blink the normal led to let the user know the program is running even if no victory led is shown
-    if timer.expired:
-        normal_led.value = True
-        time.sleep(0.1)
-        normal_led.value = False
-        time.sleep(0.1)
+    normal_led.value = not normal_led.value

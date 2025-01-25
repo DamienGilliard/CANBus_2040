@@ -5,6 +5,7 @@ the small red led is also used to indicate that the program is running.
 import board
 import busio
 import digitalio
+import analogio
 import neopixel
 import time
 import math
@@ -13,6 +14,10 @@ import adafruit_mcp2515
 # Use CAN_CS, which is predefined for GPIO19
 cs = digitalio.DigitalInOut(board.CAN_CS)
 cs.direction = digitalio.Direction.OUTPUT
+
+# Initialize the relay pin for the boards' relay control
+relay_pin = digitalio.DigitalInOut(board.A1)
+relay_pin.direction = digitalio.Direction.OUTPUT
 
 # Initialize Serial Peripheral Interface (SPI)
 spi = busio.SPI(board.SCK, board.MOSI, board.MISO)
@@ -47,9 +52,10 @@ while True:
     if message_count == 0:
         continue
     else:
-        # If message recieved, victory led:
-        for i in range(100):
-            rgb_led.fill((255*math.sin(i/10), 255*math.cos(i/10), 50))
-            time.sleep(0.05)
-        rgb_led.fill((0, 0, 0))
-        recieved_message = listener.receive() # clear the buffer
+        recieved_message = listener.receive()
+        if recieved_message.id == 0x100:
+            if recieved_message.data[0] == 0x01:
+                relay_pin.value = True
+            elif recieved_message.data[0] == 0x00:
+                relay_pin.value = False
+        

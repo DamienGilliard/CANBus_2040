@@ -13,7 +13,9 @@ The network architecture is called multi-master bus, and looks as follows:
 And my current test setup consists of two [Adafruits rp2040 CAN bus feather microcontrollers](https://learn.adafruit.com/adafruit-rp2040-can-bus-feather) (each microcontroller has a 120 Ohms resistor inside, so no additionnal resistor is needed in this configuration):
 
 
-https://github.com/user-attachments/assets/d8740315-17c7-43bf-a3d3-c2e461612089
+
+https://github.com/user-attachments/assets/e95860ec-5896-4961-8d06-f1ba2de9d57b
+
 
 
 ## Setup

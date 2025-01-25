@@ -1,0 +1,3 @@
+name, id, message, does
+relay 230V AC, 0x100, 0x01, turn on relay of reciever
+relay 230V AC, 0x100, 0x00, turn off relay of reciever

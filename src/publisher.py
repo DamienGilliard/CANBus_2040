@@ -5,51 +5,36 @@ import board
 import busio
 import digitalio
 import neopixel
-import time
-import math
-import adafruit_mcp2515
+import microcontroller_module
+import usb_cdc
 
-# Use CAN_CS, which is predefined for GPIO19
+# Use CAN_CS, which is predefined for GPIO19 on the microcontroller
 cs = digitalio.DigitalInOut(board.CAN_CS)
 cs.direction = digitalio.Direction.OUTPUT
 
 # Initialize Serial Peripheral Interface (SPI)
 spi = busio.SPI(board.SCK, board.MOSI, board.MISO)
 
-# Initialize MCP2515
-try:
-    mcp = adafruit_mcp2515.MCP2515(spi, cs)
-    print("MCP2515 detected, and device baudrate: ", mcp.baudrate)
+can_controller = microcontroller_module.CANController(spi, cs, can_dict_path="CAN_table.csv")
 
-except Exception as e:
-    print("MCP2515 not detected")
-    print(e)
-    
-# visual feed-back on the microcontroller's board
-normal_led = digitalio.DigitalInOut(board.D13)
-normal_led.direction = digitalio.Direction.OUTPUT
-rgb_led = neopixel.NeoPixel(board.NEOPIXEL, 1)
-rgb_led.brightness = .5
-    
-timer = adafruit_mcp2515.canio.Timer(timeout=2)
+# Listening to the USB port to receive commands from pc via USB
+usb = usb_cdc.data
+usb.timeout = 0.2
+print("usb connected: ", usb.connected)
+
+data = None
 
 while True:
-    if timer.expired:
-        normal_led.value = True
-        time.sleep(0.1)
-        normal_led.value = False
-        time.sleep(0.1)
-
-    listener = mcp.listen()
-    my_message = adafruit_mcp2515.canio.Message(id=0, data=b"message")
-    
-    if mcp.send(my_message):
-        # If message sent, victory led:
-        for i in range(100):
-            rgb_led.fill((255*math.sin(i/10), 255*math.cos(i/10), 50))
-            time.sleep(0.05)
-    else:
-        for i in range(100):
-            rgb_led.fill((255, 0, 0))
-            time.sleep(5)
-            rgb_led.fill((0, 0, 0))
+    can_controller.signal_standby_led()
+    if usb.connected:
+        data = usb.readline().decode("utf-8").strip()
+    if data:
+        if data == "turn on relay":
+            usb.write("turning relay on!".encode("utf-8"))
+            can_controller.send_message(id=0x100, message=0x01)
+            data = None
+            
+        elif data == "turn off relay":
+            usb.write("turning relay off!".encode("utf-8"))
+            can_controller.send_message(id=0x100, message=0x00)
+            data = None

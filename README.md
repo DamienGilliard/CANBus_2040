@@ -14,7 +14,13 @@ And my current test setup consists of two [Adafruits rp2040 CAN bus feather micr
 
 
 
-https://github.com/user-attachments/assets/e95860ec-5896-4961-8d06-f1ba2de9d57b
+<!-- https://github.com/user-attachments/assets/e95860ec-5896-4961-8d06-f1ba2de9d57b -->
+
+
+
+## Demo video:
+
+[![Watch the video](./assets/img/preview_vimeo_demo.png)](https://vimeo.com/1070688105)
 
 
 

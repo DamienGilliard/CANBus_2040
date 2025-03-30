@@ -1,5 +1,4 @@
-> [!CAUTION]
-> I am not a microtechnician. I have basic understanding of current, resistance, tension and electromagnetism, but under no circumstance should this repo be considered a reference in any way. It is just a way to document and share the usage I make of these devices and CAN protocol, as very little similar documentation seems to be available. Use at your own risks (and pleasure, I hope ;) )
+
 # CANBus_2040
 
 The aim of this repo is to lay out the basics of CAN protocol, and make some basic communications using this protocol.
